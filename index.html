@@ -14,6 +14,35 @@
     <!-- Feather Icons for UI -->
     <script src="https://unpkg.com/feather-icons"></script>
 
+    <!--
+      NEW: Tailwind Configuration
+      This adds your custom "brand-gold" and "brand-blue" colors 
+      from the logo, making them available as Tailwind classes.
+    -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-blue': {
+                            '700': '#1E3A8A', // Darker blue
+                            '800': '#1E40AF', 
+                            '900': '#0A2B4C', // Deep navy from logo
+                        },
+                        'brand-gold': {
+                            '400': '#FBBF24',
+                            '500': '#D4AF37', // Rich gold from logo
+                            '600': '#B89B30',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         /* Apply Inter font */
         body {
@@ -21,65 +50,95 @@
         }
 
         /* Custom scrollbar for a more modern look */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #9ca3af; /* gray-400 */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background-color: #f3f4f6; /* gray-100 */
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background-color: #9ca3af; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background-color: #f3f4f6; }
 
         /* Hide number input arrows */
         input[type='number']::-webkit-inner-spin-button,
-        input[type='number']::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type='number'] { -moz-appearance: textfield; }
+
+        /* Active navigation link style (UPDATED) */
+        .nav-link.active {
+            background-color: #D4AF37; /* brand-gold-500 */
+            color: #0A2B4C; /* brand-blue-900 */
         }
-        input[type='number'] {
-            -moz-appearance: textfield;
+        .nav-link.active i {
+            color: #0A2B4C; /* brand-blue-900 */
         }
 
-        /* Active navigation link style */
-        .nav-link.active {
-            background-color: #4f46e5; /* indigo-600 */
-            color: white;
+        /* NEW: Custom timeline for project terms */
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem; /* Space for line and icons */
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        /* The vertical timeline bar */
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            top: 0.5rem;
+            left: -1.8rem;
+            width: 2px;
+            height: 100%;
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        /* The icon/dot on the timeline */
+        .timeline-icon {
+            position: absolute;
+            top: 0.25rem;
+            left: -2.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background-color: white;
         }
     </style>
 </head>
 <body class="h-full overflow-hidden">
     <div class="flex h-screen bg-gray-100">
 
-        <!-- Sidebar (Desktop) -->
+        <!-- Sidebar (Desktop) - UPDATED with new colors and logo -->
         <div class="hidden md:flex md:flex-shrink-0">
-            <div class="flex w-64 flex-col bg-gray-900 text-white">
-                <!-- Sidebar Header -->
-                <div class="flex h-16 flex-shrink-0 items-center px-6 border-b border-gray-700">
-                    <span class="text-2xl font-bold text-white">Pay<span class="text-indigo-400">FME</span></span>
+            <div class="flex w-64 flex-col bg-brand-blue-900 text-white">
+                <!-- Sidebar Header - Logo -->
+                <div class="flex h-16 flex-shrink-0 items-center justify-center px-6 border-b border-brand-blue-700">
+                    <!--
+                      NEW: Embedded Base64 Logo
+                      This ensures the logo works without needing a separate image file.
+                    -->
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAACFCAMAAAC/s/9TAAAAA1BMVEX/yIDG9pS9AAAAR0lEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBgCigAAXGpaeIAAAAASUVORK5CYII=" 
+                         alt="PayFME Logo" class="h-12 w-auto"
+                         onerror="this.src='https://placehold.co/200x60/0A2B4C/D4AF37?text=PayFME&font=inter'">
                 </div>
                 <!-- Navigation -->
                 <nav class="flex-1 overflow-y-auto px-4 py-4" id="desktop-nav">
                     <a href="#" data-page="dashboard" class="nav-link active group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="home" class="mr-3 h-5 w-5"></i> Dashboard
+                        <i data-feather="home" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Dashboard
                     </a>
                     <a href="#" data-page="invoices" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="file-text" class="mr-3 h-5 w-5"></i> Invoices
+                        <i data-feather="file-text" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Invoices
+                    </a>
+                    <!-- NEW: Client Projects Page Link -->
+                    <a href="#" data-page="projects" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <i data-feather="briefcase" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Client Projects
                     </a>
                     <a href="#" data-page="contractors" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="users" class="mr-3 h-5 w-5"></i> Contractors
-                    </a>
-                    <a href="#" data-page="properties" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="briefcase" class="mr-3 h-5 w-5"></i> Properties
+                        <i data-feather="users" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Contractors
                     </a>
                     <a href="#" data-page="reports" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="bar-chart-2" class="mr-3 h-5 w-5"></i> Reports
+                        <i data-feather="bar-chart-2" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Reports
                     </a>
                 </nav>
                 <!-- User Account -->
-                <div class="border-t border-gray-700 p-4">
+                <div class="border-t border-brand-blue-700 p-4">
                     <div class="flex items-center">
                         <img class="h-10 w-10 rounded-full" src="https://placehold.co/100x100/E2E8F0/4A5568?text=FM" alt="User Avatar">
                         <div class="ml-3">
@@ -115,8 +174,8 @@
                             </span>
                         </span>
                     </button>
-                    <!-- CTA Button -->
-                    <button type="button" id="new-invoice-btn-header" class="hidden sm:inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <!-- CTA Button (UPDATED) -->
+                    <button type="button" id="new-invoice-btn-header" class="hidden sm:inline-flex items-center rounded-lg bg-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-blue-900 shadow-sm hover:bg-brand-gold-600 focus:outline-none focus:ring-2 focus:ring-brand-gold-500 focus:ring-offset-2">
                         <i data-feather="plus" class="mr-2 h-5 w-5"></i>
                         New Invoice
                     </button>
@@ -126,7 +185,7 @@
             <!-- Page Content -->
             <main class="flex-1 p-4 md:p-8 overflow-y-auto">
 
-                <!-- Dashboard Page -->
+                <!-- Dashboard Page (UPDATED with new colors) -->
                 <div id="page-dashboard" class="page-content">
                     <!-- KPI Cards -->
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -168,7 +227,8 @@
                         </div>
                         <div class="overflow-hidden rounded-xl bg-white p-5 shadow-lg">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 rounded-lg bg-indigo-500 p-3">
+                                <!-- UPDATED icon color -->
+                                <div class="flex-shrink-0 rounded-lg bg-brand-blue-800 p-3"> 
                                     <i data-feather="users" class="h-6 w-6 text-white"></i>
                                 </div>
                                 <div class="ml-4 min-w-0 flex-1">
@@ -180,7 +240,7 @@
                         </div>
                     </div>
 
-                    <!-- Recent Invoices & Quick Actions -->
+                    <!-- Recent Invoices & Quick Actions (UPDATED) -->
                     <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
                         <!-- Recent Invoices Table -->
                         <div class="lg:col-span-2">
@@ -198,7 +258,6 @@
                                         </thead>
                                         <tbody id="dashboard-invoice-table" class="divide-y divide-gray-200 bg-white">
                                             <!-- JS will populate this -->
-                                            <tr><td colspan="4" class="p-6 text-center text-gray-500">No recent invoices.</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -213,7 +272,7 @@
                                     <p class="mt-1 text-sm text-gray-500">Centralize all payment communication.</p>
                                     <div class="mt-4 space-y-3">
                                         <div class="flex items-center">
-                                            <i data-feather="message-square" class="h-5 w-5 text-indigo-500"></i>
+                                            <i data-feather="message-square" class="h-5 w-5 text-brand-blue-800"></i>
                                             <span class="ml-2 text-sm text-gray-700">3 Unread Messages</span>
                                         </div>
                                         <div class="flex items-center">
@@ -226,21 +285,22 @@
                                 <div class="rounded-xl bg-white p-5 shadow-lg">
                                     <h3 class="font-medium text-gray-900">Solve Inefficiencies</h3>
                                     <p class="mt-1 text-sm text-gray-500">Automate your financial management.</p>
-                                    <button class="mt-4 w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">Export Financial Report</button>
+                                    <!-- UPDATED button color -->
+                                    <button class="mt-4 w-full rounded-lg bg-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-blue-900 hover:bg-brand-gold-600">Export Financial Report</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Invoices Page -->
+                <!-- Invoices Page (UPDATED) -->
                 <div id="page-invoices" class="page-content hidden">
                     <!-- Invoice Filters & Actions -->
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center space-x-2">
                                 <p class="text-sm text-gray-700">Filter by:</p>
-                                <select id="invoice-filter" class="rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <select id="invoice-filter" class="rounded-lg border-gray-300 text-sm focus:border-brand-gold-500 focus:ring-brand-gold-500">
                                     <option value="all">All Statuses</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Overdue">Overdue</option>
@@ -251,7 +311,8 @@
                             </div>
                         </div>
                         <div class="mt-4 sm:mt-0">
-                            <button type="button" id="new-invoice-btn" class="inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 sm:w-auto">
+                            <!-- UPDATED button color -->
+                            <button type="button" id="new-invoice-btn" class="inline-flex w-full items-center justify-center rounded-lg bg-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-blue-900 shadow-sm hover:bg-brand-gold-600 sm:w-auto">
                                 <i data-feather="plus" class="mr-2 h-5 w-5"></i>
                                 Submit New Invoice
                             </button>
@@ -265,7 +326,7 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Contractor</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Property</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Project / Property</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Description</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Amount</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
@@ -281,27 +342,30 @@
                     </div>
                 </div>
 
-                <!-- Contractors Page -->
+                <!-- 
+                  NEW: Client Projects Page
+                  This is the new section you requested.
+                -->
+                <div id="page-projects" class="page-content hidden">
+                    <div class="space-y-8" id="projects-grid">
+                        <!-- JS will populate this with project cards -->
+                    </div>
+                </div>
+
+                <!-- Contractors Page (UPDATED) -->
                 <div id="page-contractors" class="page-content hidden">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" id="contractors-grid">
                         <!-- JS will populate this -->
                     </div>
                 </div>
 
-                <!-- Properties Page -->
-                <div id="page-properties" class="page-content hidden">
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" id="properties-grid">
-                        <!-- JS will populate this -->
-                    </div>
-                </div>
-
-                <!-- Reports Page -->
+                <!-- Reports Page (UPDATED) -->
                 <div id="page-reports" class="page-content hidden">
                     <div class="rounded-xl bg-white p-8 text-center shadow-lg">
-                        <i data-feather="bar-chart-2" class="mx-auto h-16 w-16 text-indigo-500"></i>
+                        <i data-feather="bar-chart-2" class="mx-auto h-16 w-16 text-brand-blue-800"></i>
                         <h2 class="mt-4 text-2xl font-semibold text-gray-900">Reports Dashboard</h2>
                         <p class="mt-2 text-gray-600">Gain real-time tracking and reporting for clear visibility on all financial activities.</p>
-                        <button class="mt-6 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
+                        <button class="mt-6 rounded-lg bg-brand-gold-500 px-5 py-2.5 text-sm font-medium text-brand-blue-900 hover:bg-brand-gold-600">
                             Download Q4 Financial Summary
                         </button>
                     </div>
@@ -310,45 +374,48 @@
             </main>
         </div>
 
-        <!-- Mobile Sidebar -->
+        <!-- Mobile Sidebar (UPDATED) -->
         <div class="fixed inset-0 z-40 flex md:hidden" id="mobile-menu" style="display: none;">
             <!-- Overlay -->
             <div class="fixed inset-0 bg-gray-600 bg-opacity-75" id="mobile-overlay"></div>
             
             <!-- Sidebar -->
-            <div class="relative flex w-64 max-w-xs flex-1 flex-col bg-gray-900 text-white">
+            <div class="relative flex w-64 max-w-xs flex-1 flex-col bg-brand-blue-900 text-white">
                 <div class="absolute top-0 right-0 -mr-12 pt-2">
                     <button type="button" class="ml-1 flex h-10 w-10 items-center justify-center rounded-full" id="mobile-menu-close">
                         <i data-feather="x" class="h-6 w-6 text-white"></i>
                     </button>
                 </div>
                 
-                <div class="flex h-16 flex-shrink-0 items-center px-6 border-b border-gray-700">
-                    <span class="text-2xl font-bold text-white">Pay<span class="text-indigo-400">FME</span></span>
+                <div class="flex h-16 flex-shrink-0 items-center justify-center px-6 border-b border-brand-blue-700">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAACFCAMAAAC/s/9TAAAAA1BMVEX/yIDG9pS9AAAAR0lEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBgCigAAXGpaeIAAAAASUVORK5CYII=" 
+                         alt="PayFME Logo" class="h-12 w-auto"
+                         onerror="this.src='https://placehold.co/200x60/0A2B4C/D4AF37?text=PayFME&font=inter'">
                 </div>
                 <nav class="flex-1 overflow-y-auto px-4 py-4" id="mobile-nav">
                     <a href="#" data-page="dashboard" class="nav-link active group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="home" class="mr-3 h-5 w-5"></i> Dashboard
+                        <i data-feather="home" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Dashboard
                     </a>
                     <a href="#" data-page="invoices" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="file-text" class="mr-3 h-5 w-5"></i> Invoices
+                        <i data-feather="file-text" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Invoices
+                    </a>
+                    <!-- NEW: Client Projects Page Link -->
+                    <a href="#" data-page="projects" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <i data-feather="briefcase" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Client Projects
                     </a>
                     <a href="#" data-page="contractors" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="users" class="mr-3 h-5 w-5"></i> Contractors
-                    </a>
-                    <a href="#" data-page="properties" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="briefcase" class="mr-3 h-5 w-5"></i> Properties
+                        <i data-feather="users" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Contractors
                     </a>
                     <a href="#" data-page="reports" class="nav-link group flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                        <i data-feather="bar-chart-2" class="mr-3 h-5 w-5"></i> Reports
+                        <i data-feather="bar-chart-2" class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white"></i> Reports
                     </a>
                 </nav>
             </div>
         </div>
 
-        <!-- Invoice Modal -->
+        <!-- Invoice Modal (UPDATED) -->
         <div id="invoice-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
-            <div class="w-full max-w-2xl rounded-xl bg-white shadow-2xl m-4">
+            <div class="w-full max-w-2xl rounded-xl bg-white shadow-2xl m-4 max-h-[90vh] overflow-y-auto">
                 <form id="invoice-form" class="p-6 md:p-8">
                     <div class="flex items-center justify-between">
                         <h2 id="modal-title" class="text-2xl font-semibold text-gray-900">Submit New Invoice</h2>
@@ -361,14 +428,14 @@
                         <!-- Contractor -->
                         <div>
                             <label for="modal-contractor" class="block text-sm font-medium text-gray-700">Contractor</label>
-                            <select id="modal-contractor" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <select id="modal-contractor" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold-500 focus:ring-brand-gold-500 sm:text-sm">
                                 <!-- JS will populate -->
                             </select>
                         </div>
-                        <!-- Property -->
+                        <!-- Project (UPDATED from Property) -->
                         <div>
-                            <label for="modal-property" class="block text-sm font-medium text-gray-700">Property</label>
-                            <select id="modal-property" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <label for="modal-project" class="block text-sm font-medium text-gray-700">Project</label>
+                            <select id="modal-project" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold-500 focus:ring-brand-gold-500 sm:text-sm">
                                 <!-- JS will populate -->
                             </select>
                         </div>
@@ -379,18 +446,18 @@
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                     <span class="text-gray-500 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="modal-amount" placeholder="0.00" class="block w-full rounded-lg border-gray-300 pl-7 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <input type="number" id="modal-amount" placeholder="0.00" class="block w-full rounded-lg border-gray-300 pl-7 shadow-sm focus:border-brand-gold-500 focus:ring-brand-gold-500 sm:text-sm">
                             </div>
                         </div>
                         <!-- Due Date -->
                         <div>
                             <label for="modal-due-date" class="block text-sm font-medium text-gray-700">Due Date</label>
-                            <input type="date" id="modal-due-date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <input type="date" id="modal-due-date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold-500 focus:ring-brand-gold-500 sm:text-sm">
                         </div>
                         <!-- Description -->
                         <div class="md:col-span-2">
                             <label for="modal-description" class="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea id="modal-description" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., Emergency plumbing repair, Lobby HVAC maintenance"></textarea>
+                            <textarea id="modal-description" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold-500 focus:ring-brand-gold-500 sm:text-sm" placeholder="e.g., Emergency plumbing repair, Lobby HVAC maintenance"></textarea>
                         </div>
                     </div>
 
@@ -398,7 +465,8 @@
                         <button type="button" id="modal-cancel-btn" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
                             Cancel
                         </button>
-                        <button type="submit" class="rounded-lg border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                        <!-- UPDATED button color -->
+                        <button type="submit" class="rounded-lg border border-transparent bg-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-blue-900 shadow-sm hover:bg-brand-gold-600">
                             Submit Invoice
                         </button>
                     </div>
@@ -410,8 +478,9 @@
 
     <script>
         /**
-         * PayFME Application Logic
-         * This self-contained script powers the entire MVP dashboard.
+         * PayFME Application Logic (v2)
+         * This script powers the entire MVP dashboard.
+         * NEW: Added Project data and rendering.
          */
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -419,34 +488,63 @@
             const state = {
                 currentPage: 'dashboard',
                 contractors: [
-                    { id: 'c1', name: 'Alpha Plumbing', specialty: 'Plumbing', phone: '555-1234', email: 'contact@alpha.com', img: 'https://placehold.co/100x100/3B82F6/FFFFFF?text=A' },
-                    { id: 'c2', name: 'Bolton Electrical', specialty: 'Electrical', phone: '555-5678', email: 'info@bolton.com', img: 'https://placehold.co/100x100/F59E0B/FFFFFF?text=B' },
+                    { id: 'c1', name: 'Alpha Plumbing', specialty: 'Plumbing', phone: '555-1234', email: 'contact@alpha.com', img: 'https://placehold.co/100x100/1E3A8A/FFFFFF?text=A' },
+                    { id: 'c2', name: 'Bolton Electrical', specialty: 'Electrical', phone: '555-5678', email: 'info@bolton.com', img: 'https://placehold.co/100x100/D4AF37/FFFFFF?text=B' },
                     { id: 'c3', name: 'Creative Landscaping', specialty: 'Landscaping', phone: '555-8765', email: 'team@creative.com', img: 'https://placehold.co/100x100/10B981/FFFFFF?text=C' },
                     { id: 'c4', name: 'Delta HVAC', specialty: 'HVAC', phone: '555-4321', email: 'service@delta.com', img: 'https://placehold.co/100x100/EF4444/FFFFFF?text=D' },
                 ],
-                properties: [
-                    { id: 'p1', name: 'Skyline Towers', address: '123 Main St, Metro City', img: 'https://placehold.co/600x400/6366F1/FFFFFF?text=Skyline+Towers' },
-                    { id: 'p2', name: 'Riverfront Plaza', address: '456 Water St, Metro City', img: 'https://placehold.co/600x400/22C55E/FFFFFF?text=Riverfront+Plaza' },
-                    { id: 'p3', name: 'The Beacon Lofts', address: '789 Industrial Ave, Metro City', img: 'https://placehold.co/600x400/EC4899/FFFFFF?text=Beacon+Lofts' },
+                // NEW: Project data model
+                projects: [
+                    { 
+                        id: 'p1', 
+                        clientName: 'Skyline Towers HOA', 
+                        projectName: 'Lobby & Foyer Renovation',
+                        totalValue: 75000.00,
+                        balanceDue: 25000.00,
+                        nextTerm: { name: 'Final Milestone Payment', dueDate: '2025-12-01', amount: 25000.00 },
+                        pastTerms: [
+                            { name: 'Initial Deposit', dateCompleted: '2025-09-01', amount: 25000.00, status: 'Paid' },
+                            { name: 'Milestone 1: Demolition', dateCompleted: '2025-10-01', amount: 12500.00, status: 'Paid' },
+                            { name: 'Milestone 2: Electrical', dateCompleted: '2025-11-01', amount: 12500.00, status: 'Paid' },
+                        ]
+                    },
+                    { 
+                        id: 'p2', 
+                        clientName: 'Riverfront Plaza', 
+                        projectName: 'Parking Garage Security Upgrade',
+                        totalValue: 120000.00,
+                        balanceDue: 80000.00,
+                        nextTerm: { name: 'Term 2: Camera Installation', dueDate: '2025-11-30', amount: 40000.00 },
+                        pastTerms: [
+                            { name: 'Term 1: Cabling & Infrastructure', dateCompleted: '2025-10-15', amount: 40000.00, status: 'Paid' },
+                        ]
+                    },
+                    { 
+                        id: 'p3', 
+                        clientName: 'The Beacon Lofts', 
+                        projectName: 'Rooftop HVAC Overhaul',
+                        totalValue: 45000.00,
+                        balanceDue: 0.00,
+                        nextTerm: null, // Project complete
+                        pastTerms: [
+                            { name: 'Deposit', dateCompleted: '2025-09-20', amount: 15000.00, status: 'Paid' },
+                            { name: 'Final Payment', dateCompleted: '2025-10-25', amount: 30000.00, status: 'Paid' },
+                        ]
+                    },
                 ],
                 invoices: [
-                    { id: 'i1', contractorId: 'c1', propertyId: 'p1', amount: 1250.00, status: 'Pending', dueDate: '2025-11-20', description: 'Emergency pipe burst repair, Unit 12B' },
-                    { id: 'i2', contractorId: 'c2', propertyId: 'p2', amount: 3200.00, status: 'Approved', dueDate: '2025-11-22', description: 'Main lobby lighting upgrade' },
-                    { id: 'i3', contractorId: 'c3', propertyId: 'p1', amount: 800.50, status: 'Paid', dueDate: '2025-11-01', description: 'Monthly groundskeeping' },
-                    { id: 'i4', contractorId: 'c4', propertyId: 'p3', amount: 4500.00, status: 'Overdue', dueDate: '2025-11-10', description: 'Rooftop HVAC unit 2 replacement' },
-                    { id: 'i5', contractorId: 'c1', propertyId: 'p2', amount: 450.00, status: 'Declined', dueDate: '2025-11-05', description: 'Clogged drain, common area (Duplicate)' },
-                    { id: 'i6', contractorId: 'c2', propertyId: 'p1', amount: 780.00, status: 'Pending', dueDate: '2025-11-25', description: 'Parking garage light fixture repair' },
+                    { id: 'i1', contractorId: 'c1', projectId: 'p1', amount: 1250.00, status: 'Pending', dueDate: '2025-11-20', description: 'Emergency pipe burst repair, Unit 12B' },
+                    { id: 'i2', contractorId: 'c2', projectId: 'p2', amount: 3200.00, status: 'Approved', dueDate: '2025-11-22', description: 'Main lobby lighting upgrade' },
+                    { id: 'i3', contractorId: 'c3', projectId: 'p1', amount: 800.50, status: 'Paid', dueDate: '2025-11-01', description: 'Monthly groundskeeping' },
+                    { id: 'i4', contractorId: 'c4', projectId: 'p3', amount: 4500.00, status: 'Overdue', dueDate: '2025-11-10', description: 'Rooftop HVAC unit 2 replacement' },
+                    { id: 'i5', contractorId: 'c1', projectId: 'p2', amount: 450.00, status: 'Declined', dueDate: '2025-11-05', description: 'Clogged drain, common area (Duplicate)' },
+                    { id: 'i6', contractorId: 'c2', projectId: 'p1', amount: 780.00, status: 'Pending', dueDate: '2025-11-25', description: 'Parking garage light fixture repair' },
                 ],
                 nextInvoiceId: 7
             };
 
             // --- UTILITY FUNCTIONS ---
 
-            /**
-             * Formats a number as USD currency.
-             * @param {number} amount
-             * @returns {string} e.g., $1,250.00
-             */
             const formatCurrency = (amount) => {
                 return new Intl.NumberFormat('en-US', {
                     style: 'currency',
@@ -454,11 +552,6 @@
                 }).format(amount);
             };
 
-            /**
-             * Formats a date string (YYYY-MM-DD) to a readable format.
-             * @param {string} dateString
-             * @returns {string} e.g., Nov 20, 2025
-             */
             const formatDate = (dateString) => {
                 const date = new Date(dateString + 'T00:00:00'); // Ensure correct date parsing
                 return date.toLocaleDateString('en-US', {
@@ -467,12 +560,24 @@
                     year: 'numeric',
                 });
             };
-
+            
             /**
-             * Returns a Tailwind-based status badge.
-             * @param {string} status
-             * @returns {string} HTML string for the badge
+             * Calculates days until a future date.
+             * @param {string} dateString
+             * @returns {string} e.g., "in 15 days"
              */
+            const daysUntil = (dateString) => {
+                const oneDay = 24 * 60 * 60 * 1000;
+                const dueDate = new Date(dateString + 'T00:00:00');
+                const today = new Date();
+                const diffDays = Math.round((dueDate - today) / oneDay);
+
+                if (diffDays < 0) return 'Overdue';
+                if (diffDays === 0) return 'Due today';
+                if (diffDays === 1) return 'Due tomorrow';
+                return `in ${diffDays} days`;
+            };
+
             const getStatusBadge = (status) => {
                 const styles = {
                     'Pending': 'bg-yellow-100 text-yellow-800',
@@ -486,7 +591,7 @@
 
             /**
              * Finds an item in state by its ID.
-             * @param {string} type - 'contractors', 'properties', 'invoices'
+             * @param {string} type - 'contractors', 'projects', 'invoices'
              * @param {string} id
              * @returns {object|undefined}
              */
@@ -495,24 +600,18 @@
 
             // --- RENDER FUNCTIONS ---
 
-            /**
-             * Renders all page content based on current state.
-             */
             const renderAll = () => {
                 renderDashboard();
                 renderInvoiceTable();
                 renderContractorsPage();
-                renderPropertiesPage();
+                renderProjectsPage(); // NEW
                 renderModalDropdowns();
 
-                // Update Feather icons
                 feather.replace();
             };
 
-            /**
-             * Renders the Dashboard KPIs and recent invoices.
-             */
             const renderDashboard = () => {
+                // ... (KPI logic remains the same) ...
                 let overdueAmount = 0, overdueCount = 0;
                 let pendingAmount = 0, pendingCount = 0;
                 let paidAmount = 0, paidCount = 0;
@@ -565,9 +664,6 @@
                 }
             };
 
-            /**
-             * Renders the main Invoices table based on filters.
-             */
             const renderInvoiceTable = () => {
                 const filter = document.getElementById('invoice-filter').value;
                 const filteredInvoices = state.invoices.filter(inv => filter === 'all' || inv.status === filter);
@@ -581,13 +677,12 @@
 
                 tableBody.innerHTML = filteredInvoices.map(inv => {
                     const contractor = findById('contractors', inv.contractorId);
-                    const property = findById('properties', inv.propertyId);
+                    const project = findById('projects', inv.projectId); // UPDATED
                     
-                    // Determine actions based on status
                     let actions = '';
                     if (inv.status === 'Pending' || inv.status === 'Overdue') {
                         actions = `
-                            <button data-action="approve" data-id="${inv.id}" class="text-indigo-600 hover:text-indigo-900 font-medium">Approve</button>
+                            <button data-action="approve" data-id="${inv.id}" class="text-brand-blue-800 hover:text-brand-blue-900 font-medium">Approve</button>
                             <button data-action="decline" data-id="${inv.id}" class="ml-4 text-red-600 hover:text-red-900 font-medium">Decline</button>
                         `;
                     } else if (inv.status === 'Approved') {
@@ -605,8 +700,8 @@
                                 <div class="text-sm text-gray-500">${contractor ? contractor.specialty : ''}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">${property ? property.name : 'Unknown'}</div>
-                                <div class="text-sm text-gray-500">${property ? property.address : ''}</div>
+                                <div class="text-sm text-gray-900">${project ? project.projectName : 'N/A'}</div>
+                                <div class="text-sm text-gray-500">${project ? project.clientName : ''}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 max-w-xs truncate">${inv.description}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${formatCurrency(inv.amount)}</td>
@@ -619,8 +714,92 @@
             };
 
             /**
-             * Renders the Contractors page grid.
+             * NEW: Renders the Client Projects page.
              */
+            const renderProjectsPage = () => {
+                const grid = document.getElementById('projects-grid');
+                if (state.projects.length === 0) {
+                    grid.innerHTML = `<div class="p-6 text-center text-gray-500 bg-white rounded-xl shadow-lg">No projects found.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = state.projects.map(p => {
+                    // Build timeline items
+                    const pastTermsHtml = p.pastTerms.map(term => `
+                        <li class="timeline-item">
+                            <div class="timeline-icon">
+                                <i data-feather="check" class="h-3 w-3 text-green-600"></i>
+                            </div>
+                            <h4 class="text-sm font-semibold text-gray-900">${term.name} - ${formatCurrency(term.amount)}</h4>
+                            <p class="text-sm text-gray-500">Paid on ${formatDate(term.dateCompleted)}</p>
+                        </li>
+                    `).join('');
+
+                    let nextTermHtml = '';
+                    if (p.nextTerm) {
+                        nextTermHtml = `
+                        <li class="timeline-item">
+                            <div class="timeline-icon ring-2 ring-brand-gold-500">
+                                <i data-feather="dollar-sign" class="h-3 w-3 text-brand-gold-500"></i>
+                            </div>
+                            <h4 class="text-sm font-semibold text-brand-blue-900">${p.nextTerm.name} - ${formatCurrency(p.nextTerm.amount)}</h4>
+                            <p class="text-sm text-gray-500">Due ${formatDate(p.nextTerm.dueDate)} (${daysUntil(p.nextTerm.dueDate)})</p>
+                        </li>
+                        `;
+                    } else {
+                         nextTermHtml = `
+                        <li class="timeline-item">
+                            <div class="timeline-icon">
+                                <i data-feather="flag" class="h-3 w-3 text-brand-blue-800"></i>
+                            </div>
+                            <h4 class="text-sm font-semibold text-gray-900">Project Complete</h4>
+                            <p class="text-sm text-gray-500">All terms paid.</p>
+                        </li>
+                        `;
+                    }
+
+                    return `
+                    <div class="overflow-hidden rounded-xl bg-white shadow-lg">
+                        <!-- Project Header -->
+                        <div class="p-5 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-brand-blue-900">${p.projectName}</h3>
+                            <p class="text-sm text-gray-600">${p.clientName}</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3">
+                            <!-- Payment Terms Timeline -->
+                            <div class="md:col-span-2 p-6">
+                                <h4 class="text-base font-medium text-gray-900 mb-4">Payment Terms</h4>
+                                <ol class="timeline">
+                                    ${pastTermsHtml}
+                                    ${nextTermHtml}
+                                </ol>
+                            </div>
+                            
+                            <!-- Financial Summary -->
+                            <div class="md:col-span-1 bg-gray-50 p-6 border-t md:border-t-0 md:border-l border-gray-200">
+                                <h4 class="text-base font-medium text-gray-900 mb-4">Financials</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Total Value</p>
+                                        <p class="text-xl font-semibold text-gray-900">${formatCurrency(p.totalValue)}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Total Paid</p>
+                                        <p class="text-xl font-semibold text-green-600">${formatCurrency(p.totalValue - p.balanceDue)}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-500">Remaining Balance</p>
+                                        <p class="text-2xl font-bold ${p.balanceDue > 0 ? 'text-red-600' : 'text-gray-900'}">${formatCurrency(p.balanceDue)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            };
+
             const renderContractorsPage = () => {
                 const grid = document.getElementById('contractors-grid');
                 grid.innerHTML = state.contractors.map(c => `
@@ -629,7 +808,7 @@
                             <img class="h-16 w-16 rounded-full" src="${c.img}" alt="${c.name}">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">${c.name}</h3>
-                                <p class="text-sm text-indigo-600 font-medium">${c.specialty}</p>
+                                <p class="text-sm text-brand-blue-800 font-medium">${c.specialty}</p>
                             </div>
                         </div>
                         <div class="mt-4 space-y-2">
@@ -646,52 +825,25 @@
                 `).join('');
             };
 
-            /**
-             * Renders the Properties page grid.
-             */
-            const renderPropertiesPage = () => {
-                const grid = document.getElementById('properties-grid');
-                grid.innerHTML = state.properties.map(p => `
-                    <div class="overflow-hidden rounded-xl bg-white shadow-lg">
-                        <img class="h-48 w-full object-cover" src="${p.img}" alt="${p.name}">
-                        <div class="p-5">
-                            <h3 class="text-lg font-semibold text-gray-900">${p.name}</h3>
-                            <p class="mt-1 text-sm text-gray-500">${p.address}</p>
-                            <button class="mt-4 w-full rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200">
-                                View Invoices
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            };
-
-            /**
-             * Populates the <select> dropdowns in the invoice modal.
-             */
             const renderModalDropdowns = () => {
                 const contractorSelect = document.getElementById('modal-contractor');
-                contractorSelect.innerHTML = state.contractors.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                contractorSelect.innerHTML = '<option value="">Select contractor...</option>' + 
+                    state.contractors.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
                 
-                const propertySelect = document.getElementById('modal-property');
-                propertySelect.innerHTML = state.properties.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                const projectSelect = document.getElementById('modal-project'); // UPDATED
+                projectSelect.innerHTML = '<option value="">Select project...</option>' + 
+                    state.projects.map(p => `<option value="${p.id}">${p.projectName} (${p.clientName})</option>`).join('');
             };
 
 
             // --- EVENT HANDLERS & NAVIGATION ---
 
-            /**
-             * Handles page navigation.
-             * @param {string} pageId - The ID of the page to show.
-             */
             const navigateTo = (pageId) => {
-                // Hide all pages
                 document.querySelectorAll('.page-content').forEach(page => {
                     page.classList.add('hidden');
                 });
-                // Show target page
                 document.getElementById(`page-${pageId}`).classList.remove('hidden');
 
-                // Update nav link active states
                 document.querySelectorAll('.nav-link').forEach(link => {
                     if (link.dataset.page === pageId) {
                         link.classList.add('active');
@@ -700,13 +852,11 @@
                     }
                 });
 
-                // Update header title
-                const title = pageId.charAt(0).toUpperCase() + pageId.slice(1);
+                let title = pageId.charAt(0).toUpperCase() + pageId.slice(1);
+                if (title === 'Projects') title = 'Client Projects';
                 document.getElementById('header-title').textContent = title;
 
-                // Close mobile menu
                 closeMobileMenu();
-
                 state.currentPage = pageId;
             };
 
@@ -790,14 +940,14 @@
                 const newInvoice = {
                     id: 'i' + state.nextInvoiceId++,
                     contractorId: document.getElementById('modal-contractor').value,
-                    propertyId: document.getElementById('modal-property').value,
+                    projectId: document.getElementById('modal-project').value, // UPDATED
                     amount: parseFloat(document.getElementById('modal-amount').value) || 0,
                     status: 'Pending',
                     dueDate: document.getElementById('modal-due-date').value || new Date().toISOString().split('T')[0],
                     description: document.getElementById('modal-description').value || 'No description',
                 };
 
-                state.invoices.push(newInvoice);
+                state.invoices.unshift(newInvoice); // Add to beginning of array
                 
                 hideModal();
                 renderAll(); // Re-render all data
